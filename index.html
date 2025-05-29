@@ -1,148 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreshFungi - Mushroom Store</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 2rem;
-    }
-    .product {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin: 1rem;
-      padding: 1rem;
-      width: 250px;
-      text-align: center;
-    }
-    .product img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product h3 {
-      margin: 0.5rem 0;
-    }
-    .product p {
-      margin: 0.3rem 0;
-    }
-    .buy-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .buy-btn:hover {
-      background-color: #45a049;
-    }
-    .contact-form {
-      max-width: 500px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .contact-form input, .contact-form textarea {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .contact-form button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 0.7rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .contact-form button:hover {
-      background-color: #45a049;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #333;
-      color: white;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FreshFungi – Mushroom Store</title>
+
+<style>
+:root{
+  --green:#4CAF50;
+  --green-dark:#388E3C;
+  --bg:#f4f4f4;
+  --card:#ffffff;
+  --text:#333;
+}
+.dark{
+  --bg:#1f1f1f;
+  --card:#2b2b2b;
+  --text:#e8e8e8;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s}
+header{background:var(--green);padding:1rem 0;text-align:center;color:#fff}
+.header-wrap{display:flex;flex-direction:column;align-items:center}
+header img{height:80px;border-radius:18px;margin-bottom:.5rem}
+header h1{margin:0;font-size:2rem}
+header p{margin:0;font-size:.9rem;color:#f1f1f1}
+
+nav{background:var(--green-dark);display:flex;justify-content:center;gap:2rem;padding:.8rem}
+nav a{color:#fff;text-decoration:none;font-weight:bold}
+nav a:hover{text-decoration:underline}
+
+#toggle-dark{position:absolute;right:1rem;top:1rem;background:transparent;border:1px solid #fff;color:#fff;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:.8rem}
+
+#cart-bar{padding:.6rem 1rem;text-align:right;background:#eafbe7}
+#cart-bar button{margin-left:8px;padding:4px 10px;cursor:pointer}
+
+.products{display:flex;flex-wrap:wrap;justify-content:center;padding:2rem}
+.product{background:var(--card);border-radius:12px;box-shadow:0 4px 8px rgb(0 0 0 / .08);margin:1rem;padding:1rem;width:230px;text-align:center;transition:transform .15s}
+.product:hover{transform:translateY(-4px)}
+.product img{width:100%;height:150px;object-fit:cover;border-radius:8px;cursor:pointer}
+.product h3{margin:.6rem 0 .3rem}
+.product p{margin:.2rem 0}
+.qty-wrap{display:flex;justify-content:center;align-items:center;gap:8px;margin:.4rem 0}
+.qty-wrap input{width:55px;padding:4px;text-align:center}
+
+.product button{background:var(--green);color:#fff;padding:10px 22px;border:none;border-radius:20px;cursor:pointer;font-size:.95rem;font-weight:bold}
+.product button:hover{background:#45a049}
+
+.modal{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--card);border:2px solid var(--green);border-radius:10px;padding:20px;z-index:1000;max-width:340px;width:90%;color:var(--text)}
+.modal h3{margin-top:0}
+.modal-close{position:absolute;right:8px;top:4px;font-size:20px;cursor:pointer}
+
+#cart-items li{display:flex;justify-content:space-between;margin:4px 0}
+
+section{padding:2rem;text-align:center}
+#about{background:#e8f5e9}
+#contact form{max-width:500px;margin:auto}
+#contact input,#contact textarea{width:100%;padding:.6rem;margin:.4rem 0;border:1px solid #ccc;border-radius:5px}
+#contact button{background:var(--green);color:#fff;padding:.7rem 1.5rem;border:none;cursor:pointer}
+#contact button:hover{background:#45a049}
+
+footer{text-align:center;padding:1rem;background:#333;color:#fff;margin-top:2rem}
+
+#wa-btn{position:fixed;right:18px;bottom:18px;background:#25d366;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;text-decoration:none;box-shadow:0 4px 6px rgba(0,0,0,.2);z-index:900}
+
+</style>
 </head>
 <body>
-  <header>
+
+<!-- DARK-MODE TOGGLE -->
+<button id="toggle-dark">🌙</button>
+
+<!-- HEADER -->
+<header>
+  <div class="header-wrap">
+    <img src="logo_freshfungi_final.png" alt="FreshFungi logo"/>
     <h1>FreshFungi</h1>
     <p>Fresh & Organic Mushrooms Delivered to Your Doorstep</p>
-  </header>
+  </div>
+</header>
 
-  <section class="products">
-    <div class="product">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Button_mushroom.jpg" alt="Button Mushrooms">
-      <h3>Button Mushrooms</h3>
-      <p>₹60 / 250g</p>
-      <a class="buy-btn" href="https://wa.me/9182591543?text=Hi%2C%20I'm%20interested%20in%20buying%20Button%20Mushrooms">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Pleurotus_ostreatus_JPG1.jpg" alt="Oyster Mushrooms">
-      <h3>Oyster Mushrooms</h3>
-      <p>₹70 / 250g</p>
-      <a class="buy-btn" href="https://wa.me/9182591543?text=Hi%2C%20I'm%20interested%20in%20buying%20Oyster%20Mushrooms">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Shiitake_mushroom.jpg" alt="Shiitake Mushrooms">
-      <h3>Shiitake Mushrooms</h3>
-      <p>₹90 / 250g</p>
-      <a class="buy-btn" href="https://wa.me/9182591543?text=Hi%2C%20I'm%20interested%20in%20buying%20Shiitake%20Mushrooms">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Calocybe_indica.jpg" alt="Milky Mushrooms">
-      <h3>Milky Mushrooms</h3>
-      <p>₹80 / 250g</p>
-      <a class="buy-btn" href="https://wa.me/9182591543?text=Hi%2C%20I'm%20interested%20in%20buying%20Milky%20Mushrooms">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Hericium_erinaceus_Iowa_2.jpg" alt="Lion's Mane">
-      <h3>Lion’s Mane</h3>
-      <p>₹120 / 250g</p>
-      <a class="buy-btn" href="https://wa.me/9182591543?text=Hi%2C%20I'm%20interested%20in%20buying%20Lion's%20Mane">Buy Now</a>
-    </div>
-  </section>
+<!-- NAV -->
+<nav>
+  <a href="#">Home</a>
+  <a href="#products">Products</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</nav>
 
-  <section class="contact-form">
-    <h2>Contact Us</h2>
-    <form action="https://formspree.io/f/yourformid" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+<!-- CART BAR -->
+<div id="cart-bar">
+  🛒 Items: <span id="cart-count">0</span> | Total: ₹<span id="cart-total">0</span>
+  <button onclick="showCart()">View Cart</button>
+</div>
 
-  <footer>
-    <p>&copy; 2025 FreshFungi. All rights reserved.</p>
-  </footer>
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <!-- product template -->
+</section>
+
+<!-- CART MODAL -->
+<div id="cart-modal" class="modal">
+  <span class="modal-close" onclick="hideCart()">✕</span>
+  <h3>Your Cart</h3>
+  <ul id="cart-items" style="list-style:none;padding-left:0"></ul>
+  <strong>Total ₹<span id="modal-total">0</span></strong><br><br>
+  <button onclick="showCheckout()">Checkout</button>
+</div>
+
+<!-- PRODUCT DETAILS MODAL -->
+<div id="detail-modal" class="modal"></div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal" class="modal">
+  <span class="modal-close" onclick="hideCheckout()">✕</span>
+  <h3>Place Order</h3>
+  <form onsubmit="confirmOrder(event)">
+    <input required placeholder="Your Name" id="order-name" style="width:100%;padding:.6rem;margin:.3rem 0"/>
+    <textarea required placeholder="Delivery Address" id="order-address" style="width:100%;padding:.6rem;margin:.3rem 0;height:70px"></textarea>
+    <p>Total ₹<span id="final-total">0</span></p>
+    <button type="submit" style="background:var(--green);color:#fff;padding:.6rem 1.2rem;border:none;cursor:pointer">Confirm Order</button>
+  </form>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Us</h2>
+  <p style="max-width:700px;margin:auto;font-size:1.05rem">
+    At <strong>FreshFungi</strong> we passionately deliver fresh, organic mushrooms straight from our farm in Hyderabad to your kitchen…
+  </p>
+</section>
+
+<!-- DELIVERY AREAS -->
+<section>
+  <h2>Delivery Areas</h2>
+  <p>We currently deliver to Hyderabad, Secunderabad, Gachibowli, Kondapur, and Kukatpally. Delivery fee ₹30 on orders below ₹300.</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p>Have questions or bulk inquiries? Send us a message!</p>
+  <form action="https://formspree.io/f/meogdldl" method="POST">
+    <input name="name" required placeholder="Your Name"/>
+    <input type="email" name="email" required placeholder="Your Email"/>
+    <textarea name="message" rows="5" required placeholder="Your Message"></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>&copy; 2025 FreshFungi. All rights reserved.</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a id="wa-btn" href="https://wa.me/9182591543?text=Hi%20FreshFungi%21" target="_blank">💬</a>
+
+<!-- ----------  JS  ---------- -->
+<script>
+/* ---------- PRODUCT DATA ---------- */
+const products = [
+  {
+    name: "Button Mushrooms",
+    price: 60,
+    img: "Button.jpg",
+    info: "Classic white button mushrooms."
+  },
+  {
+    name: "Oyster Mushrooms",
+    price: 70,
+    img: "Oyster.jpg",
+    info: "Tender and mild flavour."
+  },
+  {
+    name: "Shiitake Mushrooms",
+    price: 90,
+    img: "Shiitake.jpg",
+    info: "Rich umami taste."
+  },
+  {
+    name: "Milky Mushrooms",
+    price: 80,
+    img: "milky.jpg",
+    info: "Soft milky-white caps."
+  },
+  {
+    name: "Lion’s Mane",
+    price: 120,
+    img: "Lion's.jpg",
+    info: "Fuzzy, brainy-looking medicinal mushroom."
+  }
+];
+
+
+/* ---------- RENDER PRODUCTS ---------- */
+const prodWrap=document.querySelector('.products');
+products.forEach((p,i)=>{
+  prodWrap.insertAdjacentHTML('beforeend',`
+  <div class="product">
+    <img src="${p.img}" alt="${p.name}" onclick="showDetails(${i})">
+    <h3>${p.name}</h3>
+    <p>₹${p.price} / 250g</p>
+    <div class="qty-wrap">
+      <label>Qty:</label>
+      <input type="number" id="qty-${i}" value="1" min="1">
+    </div>
+    <button onclick="addToCart(${i})">Add to Cart</button>
+  </div>`);
+});
+
+/* ---------- CART LOGIC ---------- */
+let cart=[];
+function addToCart(idx){
+  const qty=+document.getElementById(`qty-${idx}`).value||1;
+  const item=products[idx];
+  cart.push({name:item.name,price:item.price,qty});
+  updateCart();
+}
+function updateCart(){
+  const count=cart.reduce((t,c)=>t+c.qty,0);
+  const total=cart.reduce((t,c)=>t+c.price*c.qty,0);
+  document.getElementById('cart-count').textContent=count;
+  document.getElementById('cart-total').textContent=total;
+}
+function showCart(){
+  const list=document.getElementById('cart-items');
+  list.innerHTML='';
+  cart.forEach(c=>{
+    const li=document.createElement('li');
+    li.textContent=`${c.name} x${c.qty}`;
+    const span=document.createElement('span');
+    span.textContent=`₹${c.price*c.qty}`;
+    li.appendChild(span);list.appendChild(li);
+  });
+  document.getElementById('modal-total').textContent=
+    cart.reduce((t,c)=>t+c.price*c.qty,0);
+  document.getElementById('cart-modal').style.display='block';
+}
+function hideCart(){document.getElementById('cart-modal').style.display='none';}
+
+/* ---------- PRODUCT DETAILS ---------- */
+function showDetails(idx){
+  const p=products[idx];
+  document.getElementById('detail-modal').innerHTML=`
+    <span class="modal-close" onclick="hideDetails()">✕</span>
+    <h3>${p.name}</h3>
+    <img src="${p.img}" alt="${p.name}" style="width:100%;border-radius:8px;margin-bottom:.6rem">
+    <p>${p.info}</p>`;
+  document.getElementById('detail-modal').style.display='block';
+}
+function hideDetails(){document.getElementById('detail-modal').style.display='none';}
+
+/* ---------- CHECKOUT ---------- */
+function showCheckout(){
+  if(cart.length===0){alert('Cart is empty');return;}
+  document.getElementById('final-total').textContent=
+    cart.reduce((t,c)=>t+c.price*c.qty,0);
+  hideCart();
+  document.getElementById('checkout-modal').style.display='block';
+}
+function hideCheckout(){document.getElementById('checkout-modal').style.display='none';}
+function confirmOrder(e){
+  e.preventDefault();
+  const name=document.getElementById('order-name').value.trim();
+  const addr=document.getElementById('order-address').value.trim();
+  if(!name||!addr){alert('Please fill in all fields');return;}
+  alert(`Thanks ${name}! Your order is confirmed 🎉`);
+  cart=[];updateCart();hideCheckout();
+}
+
+/* ---------- DARK MODE ---------- */
+const toggle=document.getElementById('toggle-dark');
+toggle.onclick=()=>{
+  document.body.classList.toggle('dark');
+  localStorage.setItem('ff-dark',document.body.classList.contains('dark'));
+};
+if(localStorage.getItem('ff-dark')==='true') document.body.classList.add('dark');
+</script>
+
 </body>
 </html>
